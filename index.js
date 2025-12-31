@@ -1,15 +1,63 @@
-// Step 1: Simulate User Behavior
-// - Add event listeners for button clicks and form submissions.
-// - Use JavaScript to dynamically update the DOM based on user actions.
+// Utility function to create elements
+function createElement(tag, text = '', attributes = {}) {
+  const element = document.createElement(tag)
+  element.textContent = text
 
-// Step 2: DOM Manipulation Functions
-// - Implement functions to add, update, and remove DOM elements.
-// - Ensure all elements are dynamically created with appropriate attributes and content.
+  Object.entries(attributes).forEach(([key, value]) => {
+    element.setAttribute(key, value)
+  })
 
-// Step 3: Error Handling
-// - Display error messages in the DOM for invalid inputs or missing elements.
-// - Create reusable functions to handle common error cases.
+  return element
+}
 
-// Step 4: Reusable Utilities
-// - Create modular utility functions, such as createElement(tag, attributes).
-// - Ensure all functions follow DRY principles for maintainability.
+// ✅ Add element to the DOM
+function addElementToDOM(containerId, text) {
+  const container = document.getElementById(containerId)
+  if (!container) return
+
+  const p = createElement('p', text)
+  container.appendChild(p)
+}
+
+// ✅ Remove element from the DOM
+function removeElementFromDOM(elementId) {
+  const element = document.getElementById(elementId)
+  if (element && element.parentNode) {
+    element.parentNode.removeChild(element)
+  }
+}
+
+// ✅ Simulate button click and update DOM
+function simulateClick(containerId, text) {
+  addElementToDOM(containerId, text)
+}
+
+// ✅ Handle form submission + validation
+function handleFormSubmit(formId, containerId) {
+  const form = document.getElementById(formId)
+  const input = document.getElementById('user-input')
+  const errorMessage = document.getElementById('error-message')
+  const container = document.getElementById(containerId)
+
+  if (!form || !input || !errorMessage || !container) return
+
+  errorMessage.textContent = ''
+  errorMessage.classList.add('hidden')
+
+  if (input.value.trim() === '') {
+    errorMessage.textContent = 'Input cannot be empty'
+    errorMessage.classList.remove('hidden')
+    return
+  }
+
+  addElementToDOM(containerId, input.value)
+  input.value = ''
+}
+
+// 🔹 Export functions for Jest
+module.exports = {
+  addElementToDOM,
+  removeElementFromDOM,
+  simulateClick,
+  handleFormSubmit
+}
